@@ -1,2 +1,2 @@
 # atomicamente-uniones-quimicas
-Graficador de uniones quimicas
+Graficador 3D de uniones quimicas
