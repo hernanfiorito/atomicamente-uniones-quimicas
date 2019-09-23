@@ -1,0 +1,36 @@
+{
+  "name": "atomicamente-uniones-quimicas",
+  "version": "1.0.0",
+  "description": "Graficador 3D de uniones quimicas",
+  "main": "index.js",
+  "dependencies": {
+    "bootstrap": "^4.3.1",
+    "jquery": "^3.4.1",
+    "popper.js": "^1.15.0",
+    "three": "^0.107.0",
+    "three-orbitcontrols": "^2.102.2",
+    "three-window-resize": "^1.0.4"
+  },
+  "devDependencies": {
+    "mini-css-extract-plugin": "^0.8.0",
+    "css-loader": "^3.2.0",
+    "html-webpack-plugin": "^3.2.0",
+    "webpack": "^4.39.1",
+    "webpack-cli": "^3.3.6",
+    "webpack-dev-server": "^3.7.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hernanfiorito/atomicamente-uniones-quimicas.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hernanfiorito/atomicamente-uniones-quimicas/issues"
+  },
+  "homepage": "https://github.com/hernanfiorito/atomicamente-uniones-quimicas#readme"
+}
