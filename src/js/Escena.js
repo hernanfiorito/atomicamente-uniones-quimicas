@@ -5,8 +5,7 @@ const OrbitControls = require('three-orbitcontrols');
 
 export var renderer = new THREE.WebGLRenderer({alpha : true, antialias: true});
 export var scene = new THREE.Scene();
-export var camera = new THREE.PerspectiveCamera(100, document.getElementById('page-content-wrapper').offsetWidth/window.innerHeight, 0.1, 1000);
-
+export var camera = new THREE.PerspectiveCamera(150, document.getElementById('page-content-wrapper').offsetWidth/window.innerHeight, 0.1, 1000);
 export function comenzarEscena(){
   var raycaster = new THREE.Raycaster();
   var mouse = new THREE.Vector2(), INTERSECTED;
@@ -14,6 +13,7 @@ export function comenzarEscena(){
   camera.position.z = camera.position.z+5;
   camera.position.x = camera.position.x+5;
   camera.position.y = camera.position.y+0;
+
 
   renderer.setClearColor( 0xFFFFFF, 0 );
   $(document).ready(function() {

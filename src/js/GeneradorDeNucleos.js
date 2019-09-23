@@ -3,11 +3,11 @@ const THREE = require('three');
 var colorProtones = 0x0000ff;
 var colorNeutrones = 0xff0000;
 
-export function generarNucleo(elemento, isotopo){
-  
-  var nucleo = new THREE.Group();
-  nucleo.name = 'isotopo';
-  
+export function generarAtomos(){
+  //var union = new THREE.Group();
+  var atomo1 = new THREE.Group();
+  var atomo2 = new THREE.Group();
+
   var radio = 5,
       segmentos = 50,
       anillos = 50;
@@ -27,19 +27,23 @@ export function generarNucleo(elemento, isotopo){
       anillos),
 
     materialEsfera);
-    esfera.position.set(0,0,0);
+    esfera.position.set(0,0,10);
+  
+  var esfera2 = new THREE.Mesh(
+    new THREE.SphereGeometry(
+      radio,
+      segmentos,
+      anillos),
+
+    materialEsfera);
+    esfera2.position.set(0,0,-10);  
     
-  nucleo.add(esfera);
-  
-  var protones = generarProtones(elemento);
-  var neutrones = generarNeutrones(isotopo);
-  protones.name = 'protones';
-  neutrones.name = 'neutrones';
-  
-  nucleo.add(protones);
-  nucleo.add(neutrones);
-  
-  return nucleo;
+  atomo1.add(esfera);
+  atomo2.add(esfera2);
+  // union.add(atomo1);
+  // union.add(atomo2);
+
+  return [atomo1, atomo2];
 }
 
 function generarProtones(elemento){

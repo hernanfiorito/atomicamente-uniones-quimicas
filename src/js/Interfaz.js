@@ -1,4 +1,4 @@
-import {generarNucleo} from './GeneradorDeNucleos';
+import {generarAtomos} from './GeneradorDeNucleos';
 import {comenzarEscena, render, scene} from './Escena';
 import $ from 'jquery';
 import 'bootstrap/dist/js/bootstrap.bundle';
@@ -8,8 +8,12 @@ import '../css/estilos.css';
 var protons, neutrons;
 
 comenzarEscena();
+mostrarAtomos();
 
-function limpiarElementosEnPantalla(){
-  scene.children = scene.children.filter(function f(elemento){return elemento.name !== "isotopo"});
+function mostrarAtomos(){
+  var union = generarAtomos();
+  scene.add(union[0]);
+  scene.add(union[1]);
+  render();
 }
 
