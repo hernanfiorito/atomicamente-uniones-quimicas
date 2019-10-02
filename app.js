@@ -121,8 +121,8 @@ function limpiarEscena(){
 	escena.children = escena.children.filter(function f(elemento){return elemento.name !== "union"});
 }
 
-$(document).on('change','#seleccion',function() {
-	var x = document.getElementById("seleccion").value;
+$(document).on('change','#elementos',function() {
+	var x = document.getElementById("elementos").value;
 	limpiarEscena();
 	graficarUnion(elementos['cloro'], elementos[x]);
 });
