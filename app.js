@@ -30,15 +30,17 @@ camara.position.set(20, 0, 30);
 
 
 // Agregamos un eje de coordenadas en (0, 0, 0) para ubicar las posiciones (después se eliminará)
-const ejes = new THREE.Group();
-ejes.name = 'ejes';
-const ejeX = new THREE.ArrowHelper(new THREE.Vector3(1, 0, 0), ejes.position, 5, 0xff0000);
-const ejeY = new THREE.ArrowHelper(new THREE.Vector3(0, 1, 0), ejes.position, 5, 0x00ff00);
-const ejeZ = new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), ejes.position, 5, 0x0000ff);
-ejes.add(ejeX);
-ejes.add(ejeY);
-ejes.add(ejeZ);
-
+function graficarEjes(){
+	const ejes = new THREE.Group();
+	ejes.name = 'ejes';
+	const ejeX = new THREE.ArrowHelper(new THREE.Vector3(1, 0, 0), ejes.position, 5, 0xff0000);
+	const ejeY = new THREE.ArrowHelper(new THREE.Vector3(0, 1, 0), ejes.position, 5, 0x00ff00);
+	const ejeZ = new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), ejes.position, 5, 0x0000ff);
+	ejes.add(ejeX);
+	ejes.add(ejeY);
+	ejes.add(ejeZ);
+	escena.add(ejes);
+}	
 
 
 // create the renderer
@@ -121,8 +123,17 @@ function limpiarEscena(){
 	escena.children = escena.children.filter(function f(elemento){return elemento.name !== "union"});
 }
 
-$(document).on('change','#elementos',function() {
-	var x = document.getElementById("elementos").value;
+function mostrarGraficos(){
 	limpiarEscena();
+	graficarEjes();
+	var x = document.getElementById("elementos").value;
 	graficarUnion(elementos['cloro'], elementos[x]);
+}
+
+$(document).ready(function(){
+	mostrarGraficos();
+});
+
+$(document).on('change','#elementos',function() {
+	mostrarGraficos();
 });
