@@ -131,15 +131,30 @@ function graficarUnionCovalente(elemento1, elemento2) {
 
 	const group = new THREE.Group();
 	group.name = 'union';
+	
+	const geometriaCilindro = new THREE.CylinderBufferGeometry(0.2, 0.2, 6, 32);
+	const materialCilindro = new THREE.MeshBasicMaterial({ color: 0xffffff });
+	const cilindro = new THREE.Mesh(geometriaCilindro, materialCilindro);
+	cilindro.rotation.x += Math.PI / 2;
+	cilindro.rotation.z += Math.PI / 2;
 
-	const materialNubeDeElectrones = new THREE.MeshBasicMaterial({ color: 0x0000ff, wireframe: false, transparent: true, opacity: 0.4 });
+	const geometria_Atomo = new THREE.SphereBufferGeometry(1, 40, 40);
 	const materialAtomo = new THREE.MeshBasicMaterial({ color: 0xffff5a, wireframe: false, transparent: false, opacity: 0.6 });
-
+	const atomoA = new THREE.Mesh(geometria_Atomo, materialAtomo);
+	atomoA.position.set(3, 0, 0);
+	const atomoB = new THREE.Mesh(geometria_Atomo, materialAtomo);
+	atomoB.position.set(-3, 0, 0);
+	
+	const materialNubeDeElectrones = new THREE.MeshBasicMaterial({ color: 0x0000ff, wireframe: false, transparent: true, opacity: 0.4 });
 	if ((electroneg1 - electroneg2) != 0) {
-		graficarUnionCovalentePolar(electroneg1, electroneg2, group, materialAtomo, materialNubeDeElectrones)
+		graficarUnionCovalentePolar(group, materialNubeDeElectrones)
 	} else {
-		graficarUnionCovalenteNoPolar(group, materialAtomo, materialNubeDeElectrones);
+		graficarUnionCovalenteNoPolar(group, materialNubeDeElectrones);
 	}
+	group.add(atomoA);
+	group.add(atomoB);
+	group.add(cilindro);
+	escena.add(group);
 	render();
 }
 
@@ -153,69 +168,36 @@ function generarPuntosNubeDeElectrones() {
 	return puntos;
 }
 
-function graficarUnionCovalenteNoPolar(grupo, materialAtomo, materialNubeDeElectrones) {
+function graficarUnionCovalenteNoPolar(grupo, materialNubeDeElectrones) {
 	const geometriaNubeDeElectrones_A = new THREE.SphereBufferGeometry(2, 40, 40, 0, Math.PI);
 	const geometriaNubeDeElectrones_B = new THREE.SphereBufferGeometry(2, 40, 40, 0, Math.PI);
-	const geometriaConectorNubeElec = new THREE.CylinderBufferGeometry(2, 2, 3, 40, 40, true);
-	const geometria_Atomo = new THREE.SphereBufferGeometry(1, 40, 40);
+	const geometriaConectorNubeElec = new THREE.CylinderBufferGeometry(2, 2, 6, 40, 40, true);
 
 	const nubeDeElectrones_A = new THREE.Mesh(geometriaNubeDeElectrones_A, materialNubeDeElectrones);
-	nubeDeElectrones_A.position.set(1.5, 0, 0);
-	const atomoA = new THREE.Mesh(geometria_Atomo, materialAtomo);
-	atomoA.position.set(1.5, 0, 0);
+	nubeDeElectrones_A.position.set(3, 0, 0);
+	
 	const nubeDeElectrones_B = new THREE.Mesh(geometriaNubeDeElectrones_B, materialNubeDeElectrones);
-	nubeDeElectrones_B.position.set(-1.5, 0, 0);
-	const atomoB = new THREE.Mesh(geometria_Atomo, materialAtomo);
-	atomoB.position.set(-1.5, 0, 0);
+	nubeDeElectrones_B.position.set(-3, 0, 0);
+	
 	nubeDeElectrones_A.rotation.y -= 3 * Math.PI / 2;
 	nubeDeElectrones_B.rotation.y += 3 * Math.PI / 2;
 	const conectorNubeElec = new THREE.Mesh(geometriaConectorNubeElec, materialNubeDeElectrones);
 	conectorNubeElec.rotation.z -= Math.PI / 2;
 
-	const geometriaCilindro = new THREE.CylinderBufferGeometry(0.2, 0.2, 2.5, 32);
-	const materialCilindro = new THREE.MeshBasicMaterial({ color: 0xffffff });
-	const cilindro = new THREE.Mesh(geometriaCilindro, materialCilindro);
-	cilindro.rotation.x += Math.PI / 2;
-	cilindro.rotation.z += Math.PI / 2;
-
 	grupo.add(nubeDeElectrones_A);
-	grupo.add(atomoA);
 	grupo.add(nubeDeElectrones_B);
-	grupo.add(atomoB);
-	grupo.add(cilindro);
 	grupo.add(conectorNubeElec);
-	escena.add(grupo);
 }
 
-function graficarUnionCovalentePolar(electroneg1, electroneg2, grupo, materialAtomo, materialNubeDeElectrones) {
-	const elemMasElectroNeg = Math.max(electroneg1, electroneg2)
+function graficarUnionCovalentePolar(grupo, materialNubeDeElectrones) {
 	const puntos = generarPuntosNubeDeElectrones();
 	geometriaNubeDeElectrones = new THREE.LatheBufferGeometry(puntos, 32);
-	const geometria_Atomo = new THREE.SphereBufferGeometry(1, 40, 40);
-
-	const atomoA = new THREE.Mesh(geometria_Atomo, materialAtomo);
-	atomoA.position.set(1.5 * elemMasElectroNeg, 0, 0);
-
-	const atomoB = new THREE.Mesh(geometria_Atomo, materialAtomo);
-	atomoB.position.set(-1.5 * elemMasElectroNeg, 0, 0);
-
-	const geometriaCilindro = new THREE.CylinderBufferGeometry(0.2, 0.2, 2.5 * elemMasElectroNeg, 32);
-	const materialCilindro = new THREE.MeshBasicMaterial({ color: 0xffffff });
-	const cilindro = new THREE.Mesh(geometriaCilindro, materialCilindro);
-	cilindro.rotation.x += Math.PI / 2;
-	cilindro.rotation.z += Math.PI / 2;
 
 	const nubeDeElectrones = new THREE.Mesh(geometriaNubeDeElectrones, materialNubeDeElectrones);
 	nubeDeElectrones.rotation.x += Math.PI / 2;
 	nubeDeElectrones.rotation.z += Math.PI / 2;
 
-	grupo.add(atomoA);
-	grupo.add(atomoB);
-	grupo.add(cilindro);
 	grupo.add(nubeDeElectrones);
-
-	escena.add(grupo);
-
 }
 
 function limpiarEscena() {
