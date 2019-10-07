@@ -188,10 +188,12 @@ function mostrarGraficos() {
 
 $(document).ready(function () {
 	mostrarGraficos();
+	graficarTexto();
 });
 
 $(document).on('change', '#elementos', function () {
 	mostrarGraficos();
+	graficarTexto();
 });
 
 
