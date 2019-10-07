@@ -79,6 +79,7 @@ function onResize() {
 render();
 
 function graficarUnion(elemento1, elemento2){
+	graficarTexto();
 	console.log('Electronegatividad ' + elemento1.nombre, elemento1.electronegatividad);
 	console.log('Electronegatividad ' + elemento2.nombre, elemento2.electronegatividad);
 
@@ -137,3 +138,22 @@ $(document).ready(function(){
 $(document).on('change','#elementos',function() {
 	mostrarGraficos();
 });
+
+
+var loader = new THREE.FontLoader();
+
+function graficarTexto(){
+	loader.load( 'rubik_regular.json', function ( font ) {
+		var geometry = new THREE.TextGeometry( 'Cl', {
+			font: font,
+			size: 1,
+			height: 0.5
+		} );
+		
+		var textMaterial = new THREE.MeshBasicMaterial({color: 'black'});
+		var textMesh = new THREE.Mesh(geometry, textMaterial);
+		textMesh.position.set(1,0,1);
+		escena.add(textMesh);	
+	} );
+}
+
