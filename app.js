@@ -139,37 +139,32 @@ function graficarUnionCovalente(elemento1, elemento2){
 	
 	if((electroneg1 - electroneg2) != 0){
 		const elemMasElectroNeg = Math.max(electroneg1, electroneg2)
-		
-		const geometriaNubeDeElectrones_A = new THREE.SphereBufferGeometry(2, 40, 40, 0, Math.PI);
-		const geometriaNubeDeElectrones_B = new THREE.SphereBufferGeometry(2 * elemMasElectroNeg, 40, 40, 0, Math.PI);
-		const geometriaConectorNubeElec = new THREE.CylinderBufferGeometry(2, 2 * elemMasElectroNeg, (2.5 * elemMasElectroNeg) + (Math.PI/2), 40, 40, true);
+		const puntos = generarPuntosNubeDeElectrones();
+		geometriaNubeDeElectrones = new THREE.LatheBufferGeometry( puntos, 32 );
 		const geometria_Atomo = new THREE.SphereBufferGeometry(1, 40, 40);
 
-		const nubeDeElectrones_A = new THREE.Mesh(geometriaNubeDeElectrones_A, materialNubeDeElectrones);
-		nubeDeElectrones_A.position.set(1.5 * elemMasElectroNeg, 0, 0);
+		
 		const atomoA = new THREE.Mesh(geometria_Atomo, materialAtomo);
 		atomoA.position.set(1.5 * elemMasElectroNeg, 0, 0);
-		const nubeDeElectrones_B = new THREE.Mesh(geometriaNubeDeElectrones_B, materialNubeDeElectrones);
-		nubeDeElectrones_B.position.set(-1.5 * elemMasElectroNeg, 0, 0);
+		
 		const atomoB = new THREE.Mesh(geometria_Atomo, materialAtomo);
 		atomoB.position.set(-1.5 * elemMasElectroNeg, 0, 0);
-		nubeDeElectrones_A.rotation.y -= 3 * Math.PI / 2;
-		nubeDeElectrones_B.rotation.y += 3 * Math.PI / 2;
-		const conectorNubeElec = new THREE.Mesh(geometriaConectorNubeElec, materialNubeDeElectrones);
-		conectorNubeElec.rotation.z -= Math.PI / 2;
-
+		
 		const geometriaCilindro = new THREE.CylinderBufferGeometry(0.2, 0.2, 2.5 * elemMasElectroNeg, 32 );
 		const materialCilindro = new THREE.MeshBasicMaterial( {color: 0xffffff} );
 		const cilindro = new THREE.Mesh(geometriaCilindro, materialCilindro );
 		cilindro.rotation.x += Math.PI / 2;
 		cilindro.rotation.z += Math.PI / 2;
+		
+		const nubeDeElectrones = new THREE.Mesh(geometriaNubeDeElectrones, materialNubeDeElectrones);
+		nubeDeElectrones.rotation.x += Math.PI/2;
+		nubeDeElectrones.rotation.z += Math.PI/2;
 
-		group.add(nubeDeElectrones_A);
 		group.add(atomoA);
-		group.add(nubeDeElectrones_B);
 		group.add(atomoB);
 		group.add(cilindro);
-		group.add(conectorNubeElec);
+		group.add(nubeDeElectrones);
+
 		escena.add(group);
 
 	} else {
@@ -206,6 +201,16 @@ function graficarUnionCovalente(elemento1, elemento2){
 		escena.add(group);
 	}
 	render();
+}
+
+function generarPuntosNubeDeElectrones(){
+	var puntos = [];
+	for ( var deg = 0; deg <= 180; deg += 6 ) {
+		var rad = Math.PI * deg / 180;
+		var punto = new THREE.Vector2( 4 *( 0.72 + 0.3 * Math.cos( rad ) ) * Math.sin( rad ), - 7  * Math.cos( rad ) );
+		puntos.push( punto );
+	}
+	return puntos;
 }
 
 function limpiarEscena(){
