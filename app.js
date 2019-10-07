@@ -83,16 +83,17 @@ function graficarUnion(elemento1, elemento2) {
 	group.name = 'union';
 
 	const geometria_Atomo = new THREE.SphereBufferGeometry(1, 40, 40);
+	const materialNubeDeElectrones = new THREE.MeshBasicMaterial({ color: 0x0000ff, wireframe: false, transparent: true, opacity: 0.4 });
 	const materialAtomo = new THREE.MeshBasicMaterial({ color: 0xffff5a, wireframe: false, transparent: false, opacity: 0.6 });
 	const atomoA = new THREE.Mesh(geometria_Atomo, materialAtomo);
 	atomoA.position.set(3, 0, 0);
 	const atomoB = new THREE.Mesh(geometria_Atomo, materialAtomo);
 	atomoB.position.set(-3, 0, 0);
 
-	if (elemento1.electronegatividad - elemento2.electronegatividad < 2) {
-		graficarUnionCovalente(group, elemento1, elemento2);
+	if (Math.abs(elemento1.electronegatividad - elemento2.electronegatividad) < 2) {
+		graficarUnionCovalente(group, materialNubeDeElectrones, elemento1, elemento2);
 	} else {
-		graficarUnionIonica(group, elemento1, elemento2);
+		graficarUnionIonica(group, materialNubeDeElectrones, elemento1, elemento2);
 	}
 
 	group.add(atomoA);
@@ -101,7 +102,7 @@ function graficarUnion(elemento1, elemento2) {
 	render();
 }
 
-function graficarUnionCovalente(group, elemento1, elemento2) {
+function graficarUnionCovalente(group, materialNubeDeElectrones, elemento1, elemento2) {
 	const electroneg1 = elemento1.electronegatividad;
 	const electroneg2 = elemento2.electronegatividad;
 
@@ -111,7 +112,6 @@ function graficarUnionCovalente(group, elemento1, elemento2) {
 	cilindro.rotation.x += Math.PI / 2;
 	cilindro.rotation.z += Math.PI / 2;
 
-	const materialNubeDeElectrones = new THREE.MeshBasicMaterial({ color: 0x0000ff, wireframe: false, transparent: true, opacity: 0.4 });
 	if ((electroneg1 - electroneg2) != 0) {
 		graficarUnionCovalentePolar(group, materialNubeDeElectrones)
 	} else {
@@ -164,8 +164,15 @@ function graficarUnionCovalentePolar(grupo, materialNubeDeElectrones) {
 	grupo.add(nubeDeElectrones);
 }
 
-function graficarUnionIonica(elemento1, elemento2){
-	
+function graficarUnionIonica(grupo, materialNubeDeElectrones, elemento1, elemento2){
+	const geometriaNubeDeElectrones = new THREE.SphereBufferGeometry(2, 40, 40, 0, 2*Math.PI);
+	const nubeDeElectrones = new THREE.Mesh(geometriaNubeDeElectrones, materialNubeDeElectrones);
+	if(elemento1.electronegatividad > elemento2.electronegatividad){
+		nubeDeElectrones.position.set(3, 0, 0);
+	} else {
+		nubeDeElectrones.position.set(-3, 0, 0);
+	}
+	grupo.add(nubeDeElectrones);
 }
 
 function limpiarEscena() {
