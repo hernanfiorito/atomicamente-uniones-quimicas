@@ -76,8 +76,6 @@ function onResize() {
 	render();
 }
 
-render();
-
 function graficarUnion(elemento1, elemento2) {
 	const group = new THREE.Group();
 	group.name = 'union';
@@ -99,7 +97,7 @@ function graficarUnion(elemento1, elemento2) {
 	group.add(atomoA);
 	group.add(atomoB);
 	escena.add(group);
-	render();
+	return group;
 }
 
 function graficarUnionCovalente(group, materialNubeDeElectrones, elemento1, elemento2) {
@@ -183,34 +181,43 @@ function mostrarGraficos() {
 	limpiarEscena();
 	graficarEjes();
 	var x = document.getElementById("elementos").value;
-	graficarUnion(elementos['cloro'], elementos[x]);
+	var grupo = graficarUnion(elementos['cloro'], elementos[x]);
+	graficarTexto(grupo, elementos['cloro'].nomenclatura, elementos[x].nomenclatura);
+	render();
 }
 
 $(document).ready(function () {
 	mostrarGraficos();
-	graficarTexto();
 });
 
 $(document).on('change', '#elementos', function () {
 	mostrarGraficos();
-	graficarTexto();
 });
 
 
 var loader = new THREE.FontLoader();
 
-function graficarTexto(){
+function graficarTexto(grupo, elemento1, elemento2){
 	loader.load( 'rubik_regular.json', function ( font ) {
-		var geometry = new THREE.TextGeometry( 'Cl', {
+		var geometry1 = new THREE.TextGeometry( elemento1, {
+			font: font,
+			size: 1,
+			height: 0.5
+		} );
+
+		var geometry2 = new THREE.TextGeometry( elemento2, {
 			font: font,
 			size: 1,
 			height: 0.5
 		} );
 		
 		var textMaterial = new THREE.MeshBasicMaterial({color: 'black'});
-		var textMesh = new THREE.Mesh(geometry, textMaterial);
-		textMesh.position.set(1,0,1);
-		escena.add(textMesh);	
+		var textMesh1 = new THREE.Mesh(geometry1, textMaterial);
+		var textMesh2 = new THREE.Mesh(geometry2, textMaterial);
+		textMesh1.position.set(2.4,0,1);
+		textMesh2.position.set(-3.6,0,1);
+		grupo.add(textMesh1);	
+		grupo.add(textMesh2);	
 	} );
 }
 
