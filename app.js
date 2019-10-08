@@ -217,7 +217,8 @@ function graficarTexto(grupo, elemento1, elemento2){
 		textMesh1.position.set(2.4,0,1);
 		textMesh2.position.set(-3.6,0,1);
 		grupo.add(textMesh1);	
-		grupo.add(textMesh2);	
+		grupo.add(textMesh2);
+		render();	
 	} );
 }
 
