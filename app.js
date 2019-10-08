@@ -176,7 +176,7 @@ function graficarUnionIonica(grupo, materialNubeDeElectrones, elemento1, element
 }
 
 function limpiarEscena() {
-	escena.children = escena.children.filter(function f(elemento) { return elemento.name !== "union" });
+	escena.children = escena.children.filter(function f(elemento) { return elemento.name !== "union" && elemento.name !== "ejes" });
 }
 
 function mostrarGraficos() {
