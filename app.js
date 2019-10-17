@@ -218,9 +218,11 @@ function graficarTexto(grupo, elemento1, elemento2){
 		var textMesh4 = new THREE.Mesh(geometry2, textMaterial);
 		textMesh1.position.set(2.4,0,1);
 		textMesh2.position.set(-3.6,0,1);
-		textMesh3.position.set(3.6,1,-1.5);
+		textMesh3.position.set(3.6,0,-1);
+		textMesh3.rotation.x += Math.PI;
 		textMesh3.rotation.z += Math.PI;
-		textMesh4.position.set(-2.4,1,-1.5);
+		textMesh4.position.set(-2.4,0,-1);
+		textMesh4.rotation.x += Math.PI;
 		textMesh4.rotation.z += Math.PI;
 		grupo.add(textMesh1);	
 		grupo.add(textMesh2);
