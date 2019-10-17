@@ -182,7 +182,7 @@ function mostrarGraficos() {
 	graficarEjes();
 	var x = document.getElementById("elementos").value;
 	var grupo = graficarUnion(elementos['cloro'], elementos[x]);
-	graficarTexto(grupo, elementos['cloro'].nomenclatura, elementos[x].nomenclatura);
+	graficarTexto(grupo, elementos['cloro'], elementos[x]);
 	render();
 }
 
@@ -198,14 +198,24 @@ $(document).on('change', '#elementos', function () {
 var loader = new THREE.FontLoader();
 
 function graficarTexto(grupo, elemento1, elemento2){
+	var textoElemento1 = elemento1.nomenclatura;
+	var textoElemento2 = elemento2.nomenclatura;
+
+	if(Math.abs(elemento1.electronegatividad - elemento2.electronegatividad) > 2){
+		if(elemento1.electronegatividad > elemento2.electronegatividad){
+			textoElemento2 += "+";
+		} else {
+			textoElemento1 += "+";
+		}
+	}
 	loader.load( 'rubik_regular.json', function ( font ) {
-		var geometry1 = new THREE.TextGeometry( elemento1, {
+		var geometry1 = new THREE.TextGeometry( textoElemento1, {
 			font: font,
 			size: 1,
 			height: 0.5
 		} );
 
-		var geometry2 = new THREE.TextGeometry( elemento2, {
+		var geometry2 = new THREE.TextGeometry( textoElemento2, {
 			font: font,
 			size: 1,
 			height: 0.5
