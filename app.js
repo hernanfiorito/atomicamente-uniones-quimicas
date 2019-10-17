@@ -124,7 +124,7 @@ function generarPuntosNubeDeElectrones() {
 	var puntos = [];
 	for (var deg = 0; deg <= 180; deg += 6) {
 		var rad = Math.PI * deg / 180;
-		var punto = new THREE.Vector2(4 * (0.72 + 0.3 * Math.cos(rad)) * Math.sin(rad), - 7 * Math.cos(rad));
+		var punto = new THREE.Vector2(6 * (0.78 + 0.18 * Math.cos(rad)) * Math.sin(rad), - 6 * Math.cos(rad));
 		puntos.push(punto);
 	}
 	return puntos;
@@ -214,10 +214,18 @@ function graficarTexto(grupo, elemento1, elemento2){
 		var textMaterial = new THREE.MeshBasicMaterial({color: 'black'});
 		var textMesh1 = new THREE.Mesh(geometry1, textMaterial);
 		var textMesh2 = new THREE.Mesh(geometry2, textMaterial);
+		var textMesh3 = new THREE.Mesh(geometry1, textMaterial);
+		var textMesh4 = new THREE.Mesh(geometry2, textMaterial);
 		textMesh1.position.set(2.4,0,1);
 		textMesh2.position.set(-3.6,0,1);
+		textMesh3.position.set(3.6,1,-1.5);
+		textMesh3.rotation.z += Math.PI;
+		textMesh4.position.set(-2.4,1,-1.5);
+		textMesh4.rotation.z += Math.PI;
 		grupo.add(textMesh1);	
 		grupo.add(textMesh2);
+		grupo.add(textMesh3);	
+		grupo.add(textMesh4);
 		render();	
 	} );
 }
