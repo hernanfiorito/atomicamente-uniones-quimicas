@@ -79,14 +79,7 @@ function onResize() {
 function graficarUnion(elemento1, elemento2) {
 	const group = new THREE.Group();
 	group.name = 'union';
-
-	const geometria_Atomo = new THREE.SphereBufferGeometry(1, 40, 40);
 	const materialNubeDeElectrones = new THREE.MeshBasicMaterial({ color: 0x0000ff, wireframe: false, transparent: true, opacity: 0.4 });
-	const materialAtomo = new THREE.MeshBasicMaterial({ color: 0xffff5a, wireframe: false, transparent: false, opacity: 0.6 });
-	const atomoA = new THREE.Mesh(geometria_Atomo, materialAtomo);
-	atomoA.position.set(3, 0, 0);
-	const atomoB = new THREE.Mesh(geometria_Atomo, materialAtomo);
-	atomoB.position.set(-3, 0, 0);
 
 	if (Math.abs(elemento1.electronegatividad - elemento2.electronegatividad) < 2) {
 		graficarUnionCovalente(group, materialNubeDeElectrones, elemento1, elemento2);
@@ -94,13 +87,21 @@ function graficarUnion(elemento1, elemento2) {
 		graficarUnionIonica(group, materialNubeDeElectrones, elemento1, elemento2);
 	}
 
-	group.add(atomoA);
-	group.add(atomoB);
 	escena.add(group);
 	return group;
 }
 
 function graficarUnionCovalente(group, materialNubeDeElectrones, elemento1, elemento2) {
+	const geometria_AtomoA = new THREE.SphereBufferGeometry(1, 40, 40);
+	const geometria_AtomoB = new THREE.SphereBufferGeometry(1, 40, 40);
+	const materialAtomo = new THREE.MeshBasicMaterial({ color: 0xffff5a, wireframe: false, transparent: false, opacity: 0.6 });
+	const atomoA = new THREE.Mesh(geometria_AtomoA, materialAtomo);
+	atomoA.name = 'atomoA'
+	atomoA.position.set(3, 0, 0);
+	const atomoB = new THREE.Mesh(geometria_AtomoB, materialAtomo);
+	atomoB.name = 'atomoB'
+	atomoB.position.set(-3, 0, 0);
+
 	const electroneg1 = elemento1.electronegatividad;
 	const electroneg2 = elemento2.electronegatividad;
 
@@ -115,7 +116,9 @@ function graficarUnionCovalente(group, materialNubeDeElectrones, elemento1, elem
 	} else {
 		graficarUnionCovalenteNoPolar(group, materialNubeDeElectrones);
 	}
-	
+
+	group.add(atomoA);
+	group.add(atomoB);
 	group.add(cilindro);
 
 }
@@ -163,6 +166,16 @@ function graficarUnionCovalentePolar(grupo, materialNubeDeElectrones) {
 }
 
 function graficarUnionIonica(grupo, materialNubeDeElectrones, elemento1, elemento2){
+	const geometria_AtomoA = new THREE.SphereBufferGeometry(1, 40, 40);
+	const geometria_AtomoB = new THREE.SphereBufferGeometry(1, 40, 40);
+	const materialAtomo = new THREE.MeshBasicMaterial({ color: 0xffff5a, wireframe: false, transparent: false, opacity: 0.6 });
+	const atomoA = new THREE.Mesh(geometria_AtomoA, materialAtomo);
+	atomoA.name = 'atomoA'
+	atomoA.position.set(3, 0, 0);
+	const atomoB = new THREE.Mesh(geometria_AtomoB, materialAtomo);
+	atomoB.name = 'atomoB'
+	atomoB.position.set(-3, 0, 0);
+
 	const geometriaNubeDeElectrones = new THREE.SphereBufferGeometry(2, 40, 40, 0, 2*Math.PI);
 	const nubeDeElectrones = new THREE.Mesh(geometriaNubeDeElectrones, materialNubeDeElectrones);
 	if(elemento1.electronegatividad > elemento2.electronegatividad){
@@ -170,6 +183,8 @@ function graficarUnionIonica(grupo, materialNubeDeElectrones, elemento1, element
 	} else {
 		nubeDeElectrones.position.set(-3, 0, 0);
 	}
+	grupo.add(atomoA);
+	grupo.add(atomoB);
 	grupo.add(nubeDeElectrones);
 }
 
