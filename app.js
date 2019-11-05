@@ -96,10 +96,10 @@ function graficarUnionCovalente(group, materialNubeDeElectrones, elemento1, elem
 	const geometria_AtomoB = new THREE.SphereBufferGeometry(elemento2.radioAtomico / 80, 40, 40);
 	const materialAtomo = new THREE.MeshBasicMaterial({ color: 0xffff5a, wireframe: false, transparent: false, opacity: 0.6 });
 	const atomoA = new THREE.Mesh(geometria_AtomoA, materialAtomo);
-	atomoA.name = 'atomoA'
+	atomoA.name = elemento1.nombre;
 	atomoA.position.set(3, 0, 0);
 	const atomoB = new THREE.Mesh(geometria_AtomoB, materialAtomo);
-	atomoB.name = 'atomoB'
+	atomoB.name = elemento2.nombre;
 	atomoB.position.set(-3, 0, 0);
 
 	const electroneg1 = elemento1.electronegatividad;
@@ -170,10 +170,10 @@ function graficarUnionIonica(grupo, materialNubeDeElectrones, elemento1, element
 	const geometria_AtomoB = new THREE.SphereBufferGeometry(1, 40, 40);
 	const materialAtomo = new THREE.MeshBasicMaterial({ color: 0xffff5a, wireframe: false, transparent: false, opacity: 0.6 });
 	const atomoA = new THREE.Mesh(geometria_AtomoA, materialAtomo);
-	atomoA.name = 'atomoA'
+	atomoA.name = elemento1.nombre;
 	atomoA.position.set(3, 0, 0);
 	const atomoB = new THREE.Mesh(geometria_AtomoB, materialAtomo);
-	atomoB.name = 'atomoB'
+	atomoB.name = elemento2.nombre;
 	atomoB.position.set(-3, 0, 0);
 
 	const geometriaNubeDeElectrones = new THREE.SphereBufferGeometry(2, 40, 40, 0, 2*Math.PI);
