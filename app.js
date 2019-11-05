@@ -236,8 +236,8 @@ function graficarTexto(grupo, elemento1, elemento2){
 		textMesh4.rotation.z += Math.PI;
 		grupo.add(textMesh1);	
 		grupo.add(textMesh2);
-		grupo.add(textMesh3);	
-		grupo.add(textMesh4);
+		//grupo.add(textMesh3);	
+		//grupo.add(textMesh4);
 		render();	
 	} );
 }
