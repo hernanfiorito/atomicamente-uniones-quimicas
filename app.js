@@ -1,5 +1,6 @@
 // Obtenemos una referencia al elemento contenedor que albergará nuestra escena
 const container = document.querySelector('#scene-container');
+const canvas = document.querySelector('#c');
 
 // Creamos la escena
 const escena = new THREE.Scene();
@@ -44,7 +45,7 @@ function graficarEjes() {
 
 
 // create the renderer
-const renderer = new THREE.WebGLRenderer({ antialias: true });
+const renderer = new THREE.WebGLRenderer({ antialias: true, canvas });
 renderer.setSize(container.clientWidth, container.clientHeight);
 renderer.setPixelRatio(window.devicePixelRatio);
 
@@ -101,6 +102,22 @@ function graficarUnionCovalente(group, materialNubeDeElectrones, elemento1, elem
 	const atomoB = new THREE.Mesh(geometria_AtomoB, materialAtomo);
 	atomoB.name = elemento2.nombre;
 	atomoB.position.set(-3, 0, 0);
+
+	//Texto 2D
+
+	const labelContainerElem = document.querySelector('#labels');
+	const elem = document.createElement('div');
+	elem.textContent = 'Texto';
+	labelContainerElem.appendChild(elem);
+	const tempV = new THREE.Vector3();
+	atomoA.updateWorldMatrix(true, false);
+	atomoA.getWorldPosition(tempV);
+	tempV.project(camara);
+	const x = (tempV.x *  .5 + .5) * canvas.clientWidth;
+	const y = (tempV.y * -.5 + .5) * canvas.clientHeight;
+	
+	elem.style.transform = 'translate(-50%, -50%) translate('+ x+'px,'+ y +'px)';
+	//Fin texto 2D
 
 	const electroneg1 = elemento1.electronegatividad;
 	const electroneg2 = elemento2.electronegatividad;
@@ -197,7 +214,7 @@ function mostrarGraficos() {
 	graficarEjes();
 	var x = document.getElementById("elementos").value;
 	var grupo = graficarUnion(elementos['cloro'], elementos[x]);
-	graficarTexto(grupo, elementos['cloro'], elementos[x]);
+	//graficarTexto(grupo, elementos['cloro'], elementos[x]);
 	render();
 }
 
