@@ -76,8 +76,6 @@ function onResize() {
 	render();
 }
 
-render();
-
 function graficarUnion(elemento1, elemento2) {
 	const group = new THREE.Group();
 	group.name = 'union';
@@ -99,7 +97,7 @@ function graficarUnion(elemento1, elemento2) {
 	group.add(atomoA);
 	group.add(atomoB);
 	escena.add(group);
-	render();
+	return group;
 }
 
 function graficarUnionCovalente(group, materialNubeDeElectrones, elemento1, elemento2) {
@@ -126,7 +124,7 @@ function generarPuntosNubeDeElectrones() {
 	var puntos = [];
 	for (var deg = 0; deg <= 180; deg += 6) {
 		var rad = Math.PI * deg / 180;
-		var punto = new THREE.Vector2(4 * (0.72 + 0.3 * Math.cos(rad)) * Math.sin(rad), - 7 * Math.cos(rad));
+		var punto = new THREE.Vector2(6 * (0.78 + 0.18 * Math.cos(rad)) * Math.sin(rad), - 6 * Math.cos(rad));
 		puntos.push(punto);
 	}
 	return puntos;
@@ -183,7 +181,9 @@ function mostrarGraficos() {
 	limpiarEscena();
 	graficarEjes();
 	var x = document.getElementById("elementos").value;
-	graficarUnion(elementos['cloro'], elementos[x]);
+	var grupo = graficarUnion(elementos['cloro'], elementos[x]);
+	graficarTexto(grupo, elementos['cloro'], elementos[x]);
+	render();
 }
 
 $(document).ready(function () {
@@ -193,3 +193,52 @@ $(document).ready(function () {
 $(document).on('change', '#elementos', function () {
 	mostrarGraficos();
 });
+
+
+var loader = new THREE.FontLoader();
+
+function graficarTexto(grupo, elemento1, elemento2){
+	var textoElemento1 = elemento1.nomenclatura;
+	var textoElemento2 = elemento2.nomenclatura;
+
+	if(Math.abs(elemento1.electronegatividad - elemento2.electronegatividad) > 2){
+		if(elemento1.electronegatividad > elemento2.electronegatividad){
+			textoElemento2 += "+";
+		} else {
+			textoElemento1 += "+";
+		}
+	}
+	loader.load( 'rubik_regular.json', function ( font ) {
+		var geometry1 = new THREE.TextGeometry( textoElemento1, {
+			font: font,
+			size: 1,
+			height: 0.5
+		} );
+
+		var geometry2 = new THREE.TextGeometry( textoElemento2, {
+			font: font,
+			size: 1,
+			height: 0.5
+		} );
+		
+		var textMaterial = new THREE.MeshBasicMaterial({color: 'black'});
+		var textMesh1 = new THREE.Mesh(geometry1, textMaterial);
+		var textMesh2 = new THREE.Mesh(geometry2, textMaterial);
+		var textMesh3 = new THREE.Mesh(geometry1, textMaterial);
+		var textMesh4 = new THREE.Mesh(geometry2, textMaterial);
+		textMesh1.position.set(2.4,0,1);
+		textMesh2.position.set(-3.6,0,1);
+		textMesh3.position.set(3.6,0,-1);
+		textMesh3.rotation.x += Math.PI;
+		textMesh3.rotation.z += Math.PI;
+		textMesh4.position.set(-2.4,0,-1);
+		textMesh4.rotation.x += Math.PI;
+		textMesh4.rotation.z += Math.PI;
+		grupo.add(textMesh1);	
+		grupo.add(textMesh2);
+		grupo.add(textMesh3);	
+		grupo.add(textMesh4);
+		render();	
+	} );
+}
+
