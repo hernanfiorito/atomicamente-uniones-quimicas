@@ -26,7 +26,7 @@ body {
   position: absolute;  /* let us position them inside the container */
   left: 0;             /* make their default position the top left of the container */
   top: 0;
-  font-size: large;
+  font-size: 2.5em;
   user-select: none;   /* don't let the text get selected */
   text-shadow:         /* create a black outline */
     -1px -1px 0 #000,
