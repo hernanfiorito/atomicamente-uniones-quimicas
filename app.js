@@ -206,6 +206,8 @@ function graficarUnionIonica(grupo, materialNubeDeElectrones, elemento1, element
 }
 
 function limpiarEscena() {
+	textos = $('#labels');
+	textos.html("");
 	escena.children = escena.children.filter(function f(elemento) { return elemento.name !== "union" && elemento.name !== "ejes" });
 }
 
