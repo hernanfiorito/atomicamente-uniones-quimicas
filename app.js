@@ -1,38 +1,22 @@
-// Obtenemos una referencia al elemento contenedor que albergará nuestra escena
 const container = document.querySelector('#scene-container');
 const canvas = document.querySelector('#c');
 
-// Creamos la escena
 const escena = new THREE.Scene();
 
-// Configuramos el color del background de la escena
-// escena.background = new THREE.Color('black');
-// escena.background = new THREE.Color(0xb4cdff);
 escena.background = new THREE.Color(0xb4cdff);
 
-// Configuramos los parámetros de la cámara
-const fov = 35; // AKA Field of View
+const fov = 35;
 const aspect = container.clientWidth / container.clientHeight;
-const near = 0.1; // the near clipping plane
-const far = 100; // the far clipping plane
+const near = 0.1;
+const far = 100;
 
-// Creamos la cámara
+
 const camara = new THREE.PerspectiveCamera(fov, aspect, near, far);
 
-// Cada objeto se crea inicialmente en ( 0, 0, 0 )
-// Para ver la escena, movemos la cámara un poco hacia atrás.
 camara.position.set(20, 0, 30);
 var atomoA;
 var atomoB;
 
-// Creamos el enlace que une los dos átomos
-
-
-// Creamos un grupo y agregamos todos los componentes.
-// Estos componentes pueden ser rotados y escalados como un grupo.
-
-
-// Agregamos un eje de coordenadas en (0, 0, 0) para ubicar las posiciones (después se eliminará)
 function graficarEjes() {
 	const ejes = new THREE.Group();
 	ejes.name = 'ejes';
@@ -45,26 +29,18 @@ function graficarEjes() {
 	escena.add(ejes);
 }
 
-
-// create the renderer
 const renderer = new THREE.WebGLRenderer({ antialias: true, canvas });
 renderer.setSize(container.clientWidth, container.clientHeight);
 renderer.setPixelRatio(window.devicePixelRatio);
 
-// add the automatically created <canvas> element to the page
 container.appendChild(renderer.domElement);
 
-// ------------------------------------------------------------------------------------------------------------------------
+
 var controls = new THREE.OrbitControls(camara, renderer.domElement);
-controls.addEventListener('change', render); // call this only in static scenes (i.e., if there is no animation loop)
-//controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
-//controls.dampingFactor = 0.05;
-//controls.screenSpacePanning = false;
+controls.addEventListener('change', render);
 controls.minDistance = 0;
 controls.maxDistance = 1000;
-//controls.maxPolarAngle = Math.PI / 2;
 
-/* ------------------------------------------------------------------------------------------------------------------------ */
 
 function render() {
 	limpiarTextos();
