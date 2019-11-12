@@ -37,7 +37,7 @@ container.appendChild(renderer.domElement);
 
 
 var controls = new THREE.OrbitControls(camara, renderer.domElement);
-controls.addEventListener('change', render);
+controls.addEventListener('change', render); 
 controls.minDistance = 0;
 controls.maxDistance = 1000;
 
@@ -210,4 +210,4 @@ $(document).on('change', '#elementos', function () {
 	mostrarGraficos();
 });
 
-$(document).on('resize', onResize, false);
+window.addEventListener('resize', onResize, false);
