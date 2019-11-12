@@ -70,10 +70,12 @@ function graficarUnionCovalente(group, materialNubeDeElectrones, elemento1, elem
 	const materialAtomo = new THREE.MeshBasicMaterial({ color: 0xffff5a, wireframe: false, transparent: false, opacity: 0.6 });
 	atomoA = new THREE.Mesh(geometria_AtomoA, materialAtomo);
 	atomoA.name = elemento1.nomenclatura;
+	atomoA.carga = '';
 	atomoA.position.set(3, 0, 0);
 	atomoB = new THREE.Mesh(geometria_AtomoB, materialAtomo);
 	atomoB.name = elemento2.nomenclatura;
 	atomoB.position.set(-3, 0, 0);
+	atomoB.carga = '';
 
 	const electroneg1 = elemento1.electronegatividad;
 	const electroneg2 = elemento2.electronegatividad;
@@ -99,7 +101,10 @@ function graficarUnionCovalente(group, materialNubeDeElectrones, elemento1, elem
 function generarTexto(atomo){
 	const labelContainerElem = document.querySelector('#labels');
 	const textoNomenclatura = document.createElement('div');
+	const superindiceCarga = document.createElement('sup')
 	textoNomenclatura.textContent = atomo.name;
+	superindiceCarga.textContent = atomo.carga;
+	textoNomenclatura.appendChild(superindiceCarga);
 	labelContainerElem.appendChild(textoNomenclatura);
 	const tempV = new THREE.Vector3();
 	atomo.updateWorldMatrix(true, false);
@@ -159,17 +164,23 @@ function graficarUnionIonica(grupo, materialNubeDeElectrones, elemento1, element
 	const materialAtomo = new THREE.MeshBasicMaterial({ color: 0xffff5a, wireframe: false, transparent: false, opacity: 0.6 });
 	atomoA = new THREE.Mesh(geometria_AtomoA, materialAtomo);
 	atomoA.name = elemento1.nomenclatura;
+	atomoA.carga = '';
 	atomoA.position.set(3, 0, 0);
 	atomoB = new THREE.Mesh(geometria_AtomoB, materialAtomo);
 	atomoB.name = elemento2.nomenclatura;
+	atomoB.carga = '';
 	atomoB.position.set(-3, 0, 0);
 
 	const geometriaNubeDeElectrones = new THREE.SphereBufferGeometry(2, 40, 40, 0, 2*Math.PI);
 	const nubeDeElectrones = new THREE.Mesh(geometriaNubeDeElectrones, materialNubeDeElectrones);
 	if(elemento1.electronegatividad > elemento2.electronegatividad){
 		nubeDeElectrones.position.set(3, 0, 0);
+		atomoB.carga = '+';
+		atomoA.carga = '-';
 	} else {
 		nubeDeElectrones.position.set(-3, 0, 0);
+		atomoA.carga = '+';
+		atomoB.carga = '-';
 	}
 	grupo.add(atomoA);
 	grupo.add(atomoB);
