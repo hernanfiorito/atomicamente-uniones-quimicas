@@ -38,6 +38,7 @@ container.appendChild(renderer.domElement);
 
 var controls = new THREE.OrbitControls(camara, renderer.domElement);
 controls.addEventListener('change', render); 
+controls.enablePan = false;
 controls.minDistance = 0;
 controls.maxDistance = 1000;
 
