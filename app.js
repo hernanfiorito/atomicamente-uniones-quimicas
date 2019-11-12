@@ -99,12 +99,6 @@ function graficarUnionCovalente(group, materialNubeDeElectrones, elemento1, elem
 	atomoB.name = elemento2.nomenclatura;
 	atomoB.position.set(-3, 0, 0);
 
-	//Texto 2D
-
-	generarTexto(atomoA);
-	generarTexto(atomoB);
-	//Fin texto 2D
-
 	const electroneg1 = elemento1.electronegatividad;
 	const electroneg2 = elemento2.electronegatividad;
 
