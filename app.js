@@ -22,6 +22,8 @@ const camara = new THREE.PerspectiveCamera(fov, aspect, near, far);
 // Cada objeto se crea inicialmente en ( 0, 0, 0 )
 // Para ver la escena, movemos la cámara un poco hacia atrás.
 camara.position.set(20, 0, 30);
+var atomoA;
+var atomoB;
 
 // Creamos el enlace que une los dos átomos
 
@@ -65,6 +67,9 @@ controls.maxDistance = 1000;
 /* ------------------------------------------------------------------------------------------------------------------------ */
 
 function render() {
+	limpiarTextos();
+	generarTexto(atomoA);
+	generarTexto(atomoB);
 	renderer.render(escena, camara);
 }
 
@@ -96,27 +101,17 @@ function graficarUnionCovalente(group, materialNubeDeElectrones, elemento1, elem
 	const geometria_AtomoA = new THREE.SphereBufferGeometry(elemento1.radioAtomico / 80, 40, 40);
 	const geometria_AtomoB = new THREE.SphereBufferGeometry(elemento2.radioAtomico / 80, 40, 40);
 	const materialAtomo = new THREE.MeshBasicMaterial({ color: 0xffff5a, wireframe: false, transparent: false, opacity: 0.6 });
-	const atomoA = new THREE.Mesh(geometria_AtomoA, materialAtomo);
-	atomoA.name = elemento1.nombre;
+	atomoA = new THREE.Mesh(geometria_AtomoA, materialAtomo);
+	atomoA.name = elemento1.nomenclatura;
 	atomoA.position.set(3, 0, 0);
-	const atomoB = new THREE.Mesh(geometria_AtomoB, materialAtomo);
-	atomoB.name = elemento2.nombre;
+	atomoB = new THREE.Mesh(geometria_AtomoB, materialAtomo);
+	atomoB.name = elemento2.nomenclatura;
 	atomoB.position.set(-3, 0, 0);
 
 	//Texto 2D
 
-	const labelContainerElem = document.querySelector('#labels');
-	const elem = document.createElement('div');
-	elem.textContent = 'Texto';
-	labelContainerElem.appendChild(elem);
-	const tempV = new THREE.Vector3();
-	atomoA.updateWorldMatrix(true, false);
-	atomoA.getWorldPosition(tempV);
-	tempV.project(camara);
-	const x = (tempV.x *  .5 + .5) * canvas.clientWidth;
-	const y = (tempV.y * -.5 + .5) * canvas.clientHeight;
-	
-	elem.style.transform = 'translate(-50%, -50%) translate('+ x+'px,'+ y +'px)';
+	generarTexto(atomoA);
+	generarTexto(atomoB);
 	//Fin texto 2D
 
 	const electroneg1 = elemento1.electronegatividad;
@@ -138,6 +133,21 @@ function graficarUnionCovalente(group, materialNubeDeElectrones, elemento1, elem
 	group.add(atomoB);
 	group.add(cilindro);
 
+}
+
+function generarTexto(atomo){
+	const labelContainerElem = document.querySelector('#labels');
+	const textoNomenclatura = document.createElement('div');
+	textoNomenclatura.textContent = atomo.name;
+	labelContainerElem.appendChild(textoNomenclatura);
+	const tempV = new THREE.Vector3();
+	atomo.updateWorldMatrix(true, false);
+	atomo.getWorldPosition(tempV);
+	tempV.project(camara);
+	const x = (tempV.x *  .5 + .5) * canvas.clientWidth;
+	const y = (tempV.y * -.5 + .5) * canvas.clientHeight;
+	
+	textoNomenclatura.style.transform = 'translate(-50%, -50%) translate('+ x +'px,'+ y +'px)';
 }
 
 function generarPuntosNubeDeElectrones() {
@@ -186,11 +196,11 @@ function graficarUnionIonica(grupo, materialNubeDeElectrones, elemento1, element
 	const geometria_AtomoA = new THREE.SphereBufferGeometry(1, 40, 40);
 	const geometria_AtomoB = new THREE.SphereBufferGeometry(1, 40, 40);
 	const materialAtomo = new THREE.MeshBasicMaterial({ color: 0xffff5a, wireframe: false, transparent: false, opacity: 0.6 });
-	const atomoA = new THREE.Mesh(geometria_AtomoA, materialAtomo);
-	atomoA.name = elemento1.nombre;
+	atomoA = new THREE.Mesh(geometria_AtomoA, materialAtomo);
+	atomoA.name = elemento1.nomenclatura;
 	atomoA.position.set(3, 0, 0);
-	const atomoB = new THREE.Mesh(geometria_AtomoB, materialAtomo);
-	atomoB.name = elemento2.nombre;
+	atomoB = new THREE.Mesh(geometria_AtomoB, materialAtomo);
+	atomoB.name = elemento2.nomenclatura;
 	atomoB.position.set(-3, 0, 0);
 
 	const geometriaNubeDeElectrones = new THREE.SphereBufferGeometry(2, 40, 40, 0, 2*Math.PI);
@@ -205,15 +215,19 @@ function graficarUnionIonica(grupo, materialNubeDeElectrones, elemento1, element
 	grupo.add(nubeDeElectrones);
 }
 
-function limpiarEscena() {
+function limpiarTextos(){
 	textos = $('#labels');
 	textos.html("");
+}
+
+function limpiarEscena() {
+	limpiarTextos();
 	escena.children = escena.children.filter(function f(elemento) { return elemento.name !== "union" && elemento.name !== "ejes" });
 }
 
 function mostrarGraficos() {
 	limpiarEscena();
-	graficarEjes();
+	//graficarEjes();
 	var x = document.getElementById("elementos").value;
 	var grupo = graficarUnion(elementos['cloro'], elementos[x]);
 	//graficarTexto(grupo, elementos['cloro'], elementos[x]);
@@ -222,6 +236,7 @@ function mostrarGraficos() {
 
 $(document).ready(function () {
 	mostrarGraficos();
+	render();
 });
 
 $(document).on('change', '#elementos', function () {
